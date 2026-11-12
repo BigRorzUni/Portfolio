@@ -1,0 +1,107 @@
+
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }} - Rory Edmonds{% endblock %}
+
+{% block content %}
+
+<p>
+    <a href="{{ url_for('home.index') }}#projects">
+        &lt; Back to projects
+    </a>
+</p>
+
+<section>
+    <h2>{{ project.title }}</h2>
+
+    <p><strong>{{ project.subtitle }}</strong></p>
+
+    <p>
+        <strong>Date:</strong> {{ project.date }}
+        |
+        <strong>Status:</strong> {{ project.status }}
+    </p>
+
+    <p>{{ project.description }}</p>
+</section>
+
+<section>
+    <h2>Overview</h2>
+    <p>{{ project.overview }}</p>
+</section>
+
+<section>
+    <h2>Technologies</h2>
+
+    {% for technology in project.technologies %}
+        <span class="technology">{{ technology }}</span>
+    {% endfor %}
+</section>
+
+<section>
+    <h2>Key Features</h2>
+
+    <ul>
+        {% for feature in project.features %}
+            <li>{{ feature }}</li>
+        {% endfor %}
+    </ul>
+</section>
+
+{% if project.images %}
+<section>
+    <h2>Gallery</h2>
+
+    {% for image in project.images %}
+        <div class="project-image">
+            <img
+                src="{{ url_for('static', filename=image.src) }}"
+                alt="{{ image.caption }}"
+            >
+            <p>{{ image.caption }}</p>
+        </div>
+    {% endfor %}
+</section>
+{% endif %}
+
+{% if project.video %}
+<section>
+    <h2>Video Demonstration</h2>
+
+    <div class="video-container">
+        <iframe
+            src="{{ project.video }}"
+            title="Project demonstration"
+            allowfullscreen>
+        </iframe>
+    </div>
+</section>
+{% endif %}
+
+<section>
+    <h2>Source Code & Resources</h2>
+
+    <ul>
+        <li>
+            <a href="{{ project.github }}" target="_blank">
+                GitHub Repository
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ project.readme }}" target="_blank">
+                Project README
+            </a>
+        </li>
+
+        {% for link in project.links %}
+            <li>
+                <a href="{{ link.url }}" target="_blank">
+                    {{ link.title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</section>
+
+{% endblock %}
