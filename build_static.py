@@ -6,12 +6,17 @@ from App import create_app
 from App import home, projects
 
 
+# GitHub Pages repository path
+SITE_PREFIX = "/Portfolio"
+
+
 # Create Flask application
 app = create_app()
 
 # Register blueprints
 app.register_blueprint(home.base)
 app.register_blueprint(projects.base)
+
 
 # Output directory
 output_dir = Path("docs")
@@ -24,10 +29,18 @@ output_dir.mkdir()
 
 
 def save_page(url, output_path):
-    response = app.test_client().get(url)
+    # Tell Flask that the website is hosted under /Portfolio
+    response = app.test_client().get(
+        url,
+        environ_overrides={
+            "SCRIPT_NAME": SITE_PREFIX
+        }
+    )
 
     if response.status_code != 200:
-        raise RuntimeError(f"Failed to render {url}")
+        raise RuntimeError(
+            f"Failed to render {url}: HTTP {response.status_code}"
+        )
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_bytes(response.data)

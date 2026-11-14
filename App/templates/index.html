@@ -24,31 +24,24 @@
 <section id="education">
     <h2>Education</h2>
     <p>
-        <!-- Add your education details here -->
+     
     </p>
 </section>
 
 <section id="projects">
     <h2>My Projects</h2>
 
+{% for project_id, project in projects.items() %}
     <div class="project">
         <h3>
-            <a href="{{ url_for('projects.project_page', project_id='ray-tracer') }}">
-                01. Ray Tracer
+            <a href="{{ url_for('projects.project_page', project_id=project_id) }}">
+                {{ loop.index }}. {{ project.title }}
             </a>
         </h3>
-        <p>A C++ rendering project.</p>
-    </div>
 
-    <div class="project">
-        <h3>
-            <a href="{{ url_for('projects.project_page', project_id='npr-rendering') }}">
-                02. NPR Rendering
-            </a>
-        </h3>
-        <p>Stylised rendering in Unity.</p>
+        <p>{{ project.subtitle }}</p>
     </div>
-</section>
+{% endfor %}
 
 <section id="contact">
     <h2>Contact</h2>
